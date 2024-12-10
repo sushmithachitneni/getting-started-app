@@ -1,30 +1,11 @@
-pipeline {
-    agent any 
+FROM node:18-alpine
 
-    stages {
-        stage('Build') {
-            steps {
-                script {
-                    // Build your Docker image
-                    bat 'docker build -t my-nodejs-app .'
-                }
-            }
-        }
-        stage('Test') {
-            steps {
-                script {
-                    // Run tests here if you have any
-                    echo 'Running tests...'
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                script {
-                    // Deploy your Docker image
-                    echo 'Deploying application...'
-                }
-            }
-        }
-    }
-}
+WORKDIR /app
+
+COPY . .
+
+RUN yarn install --production
+
+CMD ["node", "src/index.js"]
+
+EXPOSE 3000
